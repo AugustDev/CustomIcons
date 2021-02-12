@@ -15,7 +15,8 @@ protocol ListModelType: class, ServiceInjected, JSONDecoderInjected {
 final class ListModel: ListModelType {
     func get() -> AnyPublisher<[Icon], Error> {
         return service.get(EndPoint.remote)
-            .decode(type: [Icon].self, decoder: jsonDecoder)
+            .decode(type: Response.self, decoder: jsonDecoder)
+            .map { $0.icons }
             .eraseToAnyPublisher()
     }
 }

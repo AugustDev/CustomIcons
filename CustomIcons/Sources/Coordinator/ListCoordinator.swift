@@ -7,10 +7,8 @@
 
 import UIKit
 
-final class ListCoordinator: Coordinator, NavControllerInjected {
-    
+final class ListCoordinator: Coordinator, NavControllerInjected, ListControllerInjected {
     func start() {
-        let controller = ListController()
-        navController.pushViewController(controller, animated: false)
+        navController.pushViewController(listController, animated: false)
     }
 }

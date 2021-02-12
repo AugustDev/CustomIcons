@@ -19,9 +19,9 @@ enum EndPoint: EndPointType {
     
     var url: URL? {
         switch self {
-        case .remote: return URL(fileURLWithPath: Bundle.main.path(forResource: "IconsData", ofType: "json") ?? "")
+        case .remote: return URL(string: "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/IconsData.json")
         case .image(let url): return URL(string: url)
-        case .mock: return URL(string: "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/IconsData.json")
+        case .mock: return URL(fileURLWithPath: Bundle.main.path(forResource: "IconsData", ofType: "json") ?? "")
         }
     }
 }

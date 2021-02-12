@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class ListController: UIViewController {
+final class ListController: UIViewController, ListViewModelInjected {
 
     private var isLoading = false
     private var items = [Icon]() {
@@ -22,10 +22,22 @@ final class ListController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        configureBinding()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        listViewModel.get()
+    }
+}
+
+// MARK: - Binding
+extension ListController {
+    func configureBinding() {
+        listViewModel.$items
+            .receive(on: RunLoop.main)
+            .assign(to: \.items, on: self)
+            .store(in: &disposables)
     }
 }
 

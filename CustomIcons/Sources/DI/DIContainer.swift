@@ -35,6 +35,8 @@ extension InjectionMap {
     
     static var navController = UINavigationController()
     
+    static var service: ServiceType = Service()
+    
     static var jsonDecoder: JSONDecoder {
         let decoder = JSONDecoder()
         decoder.dataDecodingStrategy = .base64
@@ -56,6 +58,13 @@ protocol NavControllerInjected {}
 
 extension NavControllerInjected {
     var navController: UINavigationController { get { return InjectionMap.navController } }
+}
+
+// MARK: Service
+protocol ServiceInjected {}
+
+extension ServiceInjected {
+    var service: ServiceType { get { return InjectionMap.service } }
 }
 
 // MARK: JSONDecoder

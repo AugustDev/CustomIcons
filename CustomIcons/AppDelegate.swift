@@ -8,11 +8,9 @@
 import UIKit
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate, WindowInjected {
+class AppDelegate: UIResponder, UIApplicationDelegate, WindowInjected, AppCoordinatorInjected {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        window.makeKeyAndVisible()
-        window.rootViewController = UINavigationController(rootViewController: ListController())
-        window.tintColor = .darkGray
+        appCoordinator.start()
         return true
     }
 }

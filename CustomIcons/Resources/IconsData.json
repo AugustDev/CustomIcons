@@ -1,0 +1,84 @@
+{
+  "icons": [
+    {
+      "title": "Lime Green",
+      "subtitle": "#A5EA9B",
+      "image": "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/LimeGreen.png"
+    },
+    {
+      "title": "Peaceful Green",
+      "subtitle": "#DAFFD5",
+      "image": "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/PeacefulGreen.png"
+    },
+    {
+      "title": "Royal Purple",
+      "subtitle": "#6C58B6",
+      "image": "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/RoyalPurple.png"
+    },
+    {
+      "title": "Calm Rose",
+      "subtitle": "#F49691",
+      "image": "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/CalmRose.png"
+    },
+    {
+      "title": "Yellow Mellow",
+      "subtitle": "#F6A34E",
+      "image": "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/YellowMellow.png"
+    },
+    {
+      "title": "Macaroni and Cheese",
+      "subtitle": "#FEB97A",
+      "image": "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/MacaroniAndCheese.png"
+    },
+    {
+      "title": "Hey Grey",
+      "subtitle": "#E1DFD8",
+      "image": "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/HeyGrey.png"
+    },
+    {
+      "title": "Tortoise Turquoise",
+      "subtitle": "#58BEBE",
+      "image": "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/TortoiseTurquoise.png"
+    },
+    {
+      "title": "Banana Mania",
+      "subtitle": "#EFC86D",
+      "image": "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/BananaMania.png"
+    },
+    {
+      "title": "Red Brick",
+      "subtitle": "#F54546",
+      "image": "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/RedBrick.png"
+    },
+    {
+      "title": "Blue Sky",
+      "subtitle": "#B6E7E8",
+      "image": "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/BlueSky.png"
+    },
+    {
+      "title": "Violent Violet",
+      "subtitle": "#9D4996",
+      "image": "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/ViolentViolet.png"
+    },
+    {
+      "title": "Minty Mint",
+      "subtitle": "#44D2B2",
+      "image": "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/MintyMint.png"
+    },
+    {
+      "title": "Orange Juice",
+      "subtitle": "#F85A1F",
+      "image": "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/OrangeJuice.png"
+    },
+    {
+      "title": "Clear Blue",
+      "subtitle": "#3575F7",
+      "image": "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/ClearBlue.png"
+    },
+    {
+      "title": "Cornflower",
+      "subtitle": "#B3D0FF",
+      "image": "https://irapps.github.io/wzpsolutions/tests/ios-custom-icons/Cornflower.png"
+    }
+  ]
+}

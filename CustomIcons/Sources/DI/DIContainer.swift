@@ -11,6 +11,8 @@ import UIKit
 struct InjectionMap {
     static var appCoordinator = AppCoordinator()
     static var listCoordinator = ListCoordinator()
+    static var listModel: ListModelType = ListModel()
+    static var service: ServiceType = Service()
 }
 
 // MARK: AppCoordinator
@@ -27,16 +29,26 @@ extension ListCoordinatorInjected {
     var listCoordinator: ListCoordinator { get { return InjectionMap.listCoordinator } }
 }
 
+// MARK: ListModel
+protocol ListModelInjected {}
+
+extension ListModelInjected {
+    var listModel: ListModelType { get { return InjectionMap.listModel } }
+}
+
+// MARK: Service
+protocol ServiceInjected {}
+
+extension ServiceInjected {
+    var service: ServiceType { get { return InjectionMap.service } }
+}
+
 
 // MARK: - Util
 extension InjectionMap {
     
     static var window = UIWindow(frame: UIScreen.main.bounds)
-    
     static var navController = UINavigationController()
-    
-    static var service: ServiceType = Service()
-    
     static var jsonDecoder: JSONDecoder {
         let decoder = JSONDecoder()
         decoder.dataDecodingStrategy = .base64
@@ -58,13 +70,6 @@ protocol NavControllerInjected {}
 
 extension NavControllerInjected {
     var navController: UINavigationController { get { return InjectionMap.navController } }
-}
-
-// MARK: Service
-protocol ServiceInjected {}
-
-extension ServiceInjected {
-    var service: ServiceType { get { return InjectionMap.service } }
 }
 
 // MARK: JSONDecoder

@@ -18,6 +18,9 @@
 		609ABA2125D705FC007C500C /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609ABA2025D705FC007C500C /* AppCoordinator.swift */; };
 		609ABA2425D708B4007C500C /* ListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609ABA2325D708B4007C500C /* ListCoordinator.swift */; };
 		609ABA2825D70AE6007C500C /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609ABA2725D70AE6007C500C /* Service.swift */; };
+		609ABA2C25D71054007C500C /* ListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609ABA2B25D71054007C500C /* ListModel.swift */; };
+		609ABA2F25D711ED007C500C /* EndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609ABA2E25D711ED007C500C /* EndPoint.swift */; };
+		609ABA3225D71382007C500C /* IconsData.json in Resources */ = {isa = PBXBuildFile; fileRef = 609ABA3125D71382007C500C /* IconsData.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +37,9 @@
 		609ABA2025D705FC007C500C /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		609ABA2325D708B4007C500C /* ListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCoordinator.swift; sourceTree = "<group>"; };
 		609ABA2725D70AE6007C500C /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		609ABA2B25D71054007C500C /* ListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListModel.swift; sourceTree = "<group>"; };
+		609ABA2E25D711ED007C500C /* EndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPoint.swift; sourceTree = "<group>"; };
+		609ABA3125D71382007C500C /* IconsData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = IconsData.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +83,7 @@
 		609AB9FD25D6FAFF007C500C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				609ABA3125D71382007C500C /* IconsData.json */,
 				609AB9E825D6F53C007C500C /* Assets.xcassets */,
 				609AB9EA25D6F53C007C500C /* LaunchScreen.storyboard */,
 				609AB9ED25D6F53C007C500C /* Info.plist */,
@@ -110,6 +117,7 @@
 			children = (
 				609ABA1025D6FFC3007C500C /* Service */,
 				609ABA0825D6FE85007C500C /* DataStructs */,
+				609ABA2B25D71054007C500C /* ListModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -158,6 +166,7 @@
 			isa = PBXGroup;
 			children = (
 				609ABA2725D70AE6007C500C /* Service.swift */,
+				609ABA2E25D711ED007C500C /* EndPoint.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -219,6 +228,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				609ABA3225D71382007C500C /* IconsData.json in Resources */,
 				609ABA1625D700D9007C500C /* README.md in Resources */,
 				609AB9EC25D6F53C007C500C /* LaunchScreen.storyboard in Resources */,
 				609AB9E925D6F53C007C500C /* Assets.xcassets in Resources */,
@@ -232,7 +242,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				609ABA2C25D71054007C500C /* ListModel.swift in Sources */,
 				609ABA2125D705FC007C500C /* AppCoordinator.swift in Sources */,
+				609ABA2F25D711ED007C500C /* EndPoint.swift in Sources */,
 				609ABA2825D70AE6007C500C /* Service.swift in Sources */,
 				609ABA1A25D7023D007C500C /* DIContainer.swift in Sources */,
 				609ABA0A25D6FEA2007C500C /* Icon.swift in Sources */,

@@ -20,12 +20,15 @@ enum APIError: Error, LocalizedError {
 }
 
 protocol ServiceType {
-    func get(url: URL) -> AnyPublisher<Data, APIError>
+    func get(_ endpoint: EndPointType) -> AnyPublisher<Data, APIError>
 }
 
 struct Service: ServiceType {
-    func get(url: URL) -> AnyPublisher<Data, APIError> {
-        URLSession.shared.dataTaskPublisher(for: url)
+    func get(_ endpoint: EndPointType) -> AnyPublisher<Data, APIError> {
+        
+        guard let url = endpoint.url else { fatalError("BAD URL")}
+        
+        return URLSession.shared.dataTaskPublisher(for: url)
             .tryMap { data, response in
                 guard let httpResponse = response as? HTTPURLResponse, 200..<300 ~= httpResponse.statusCode else {
                     throw APIError.unknown

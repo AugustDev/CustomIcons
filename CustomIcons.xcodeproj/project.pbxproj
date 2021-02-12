@@ -13,6 +13,7 @@
 		609AB9EC25D6F53C007C500C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 609AB9EA25D6F53C007C500C /* LaunchScreen.storyboard */; };
 		609ABA0A25D6FEA2007C500C /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609ABA0925D6FEA2007C500C /* Icon.swift */; };
 		609ABA1625D700D9007C500C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 609ABA1525D700D9007C500C /* README.md */; };
+		609ABA1A25D7023D007C500C /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609ABA1925D7023D007C500C /* DIContainer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		609AB9ED25D6F53C007C500C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		609ABA0925D6FEA2007C500C /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Icon.swift; path = ../../../../../Icon.swift; sourceTree = "<group>"; };
 		609ABA1525D700D9007C500C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		609ABA1925D7023D007C500C /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 		609ABA0D25D6FFAC007C500C /* DI */ = {
 			isa = PBXGroup;
 			children = (
+				609ABA1925D7023D007C500C /* DIContainer.swift */,
 			);
 			path = DI;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				609ABA1A25D7023D007C500C /* DIContainer.swift in Sources */,
 				609ABA0A25D6FEA2007C500C /* Icon.swift in Sources */,
 				609AB9E425D6F535007C500C /* ListController.swift in Sources */,
 				609AB9E025D6F535007C500C /* AppDelegate.swift in Sources */,

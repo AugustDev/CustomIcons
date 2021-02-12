@@ -10,8 +10,12 @@ import Combine
 
 final class ListController: UIViewController {
 
-    private var items = [Icon]()
     private var isLoading = false
+    private var items = [Icon]() {
+        didSet {
+            print(items)
+        }
+    }
     
     private var disposables: Set<AnyCancellable> = []
     

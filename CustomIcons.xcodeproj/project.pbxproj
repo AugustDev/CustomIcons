@@ -23,6 +23,10 @@
 		609ABA3225D71382007C500C /* IconsData.json in Resources */ = {isa = PBXBuildFile; fileRef = 609ABA3125D71382007C500C /* IconsData.json */; };
 		609ABA3825D71CAE007C500C /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609ABA3725D71CAE007C500C /* ListViewModel.swift */; };
 		609ABA3B25D72997007C500C /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609ABA3A25D72997007C500C /* Response.swift */; };
+		609ABA4025D72CE7007C500C /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609ABA3F25D72CE7007C500C /* ListCell.swift */; };
+		609ABA4325D72CFF007C500C /* ConfigurableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609ABA4225D72CFF007C500C /* ConfigurableCell.swift */; };
+		609ABA4725D72E09007C500C /* ReusableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609ABA4625D72E09007C500C /* ReusableCell.swift */; };
+		609ABA4C25D730F5007C500C /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609ABA4B25D730F5007C500C /* UIView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +48,10 @@
 		609ABA3125D71382007C500C /* IconsData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = IconsData.json; sourceTree = "<group>"; };
 		609ABA3725D71CAE007C500C /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
 		609ABA3A25D72997007C500C /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		609ABA3F25D72CE7007C500C /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
+		609ABA4225D72CFF007C500C /* ConfigurableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurableCell.swift; sourceTree = "<group>"; };
+		609ABA4625D72E09007C500C /* ReusableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableCell.swift; sourceTree = "<group>"; };
+		609ABA4B25D730F5007C500C /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				609AB9E325D6F535007C500C /* ListController.swift */,
+				609ABA3F25D72CE7007C500C /* ListCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -154,6 +163,8 @@
 		609ABA0E25D6FFB2007C500C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				609ABA4A25D730E4007C500C /* Extensions */,
+				609ABA4925D7309B007C500C /* Protocols */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -175,6 +186,23 @@
 				609ABA2E25D711ED007C500C /* EndPoint.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		609ABA4925D7309B007C500C /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				609ABA4225D72CFF007C500C /* ConfigurableCell.swift */,
+				609ABA4625D72E09007C500C /* ReusableCell.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		609ABA4A25D730E4007C500C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				609ABA4B25D730F5007C500C /* UIView.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -248,14 +276,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				609ABA4C25D730F5007C500C /* UIView.swift in Sources */,
 				609ABA2C25D71054007C500C /* ListModel.swift in Sources */,
 				609ABA2125D705FC007C500C /* AppCoordinator.swift in Sources */,
 				609ABA2F25D711ED007C500C /* EndPoint.swift in Sources */,
 				609ABA2825D70AE6007C500C /* Service.swift in Sources */,
 				609ABA3B25D72997007C500C /* Response.swift in Sources */,
+				609ABA4725D72E09007C500C /* ReusableCell.swift in Sources */,
+				609ABA4025D72CE7007C500C /* ListCell.swift in Sources */,
 				609ABA1A25D7023D007C500C /* DIContainer.swift in Sources */,
 				609ABA0A25D6FEA2007C500C /* Icon.swift in Sources */,
 				609ABA2425D708B4007C500C /* ListCoordinator.swift in Sources */,
+				609ABA4325D72CFF007C500C /* ConfigurableCell.swift in Sources */,
 				609ABA1E25D7053A007C500C /* Coordinator.swift in Sources */,
 				609AB9E425D6F535007C500C /* ListController.swift in Sources */,
 				609AB9E025D6F535007C500C /* AppDelegate.swift in Sources */,

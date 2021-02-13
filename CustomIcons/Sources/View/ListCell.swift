@@ -54,7 +54,7 @@ extension ListCell {
         
         //
         selectionStyle = .none
-        layoutMargins = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 40)
         preservesSuperviewLayoutMargins = false
         
         if accessoryView == nil {
@@ -120,6 +120,7 @@ private extension UIView {
     
     static func iconImageView() -> UIImageView {
         let imageView = UIImageView()
+        imageView.backgroundColor = .lightGray
         imageView.layer.cornerRadius = 10
         imageView.clipsToBounds = true
         return imageView

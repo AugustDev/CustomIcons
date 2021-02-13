@@ -7,8 +7,8 @@
 
 import UIKit
 
+// MARK: - AutoLayout Helper
 extension UIView {
-    
     func anchor(top: NSLayoutYAxisAnchor? = nil, paddingTop: CGFloat = 0, bottom: NSLayoutYAxisAnchor? = nil, paddingBottom: CGFloat = 0, left: NSLayoutXAxisAnchor? = nil, paddingLeft: CGFloat = 0, right: NSLayoutXAxisAnchor? = nil, paddingRight: CGFloat = 0, width: CGFloat = 0, height: CGFloat = 0, centerX: NSLayoutXAxisAnchor? = nil, centerY: NSLayoutYAxisAnchor? = nil) {
         
         translatesAutoresizingMaskIntoConstraints = false
@@ -37,5 +37,14 @@ extension UIView {
         if let centerY = centerY {
             centerYAnchor.constraint(equalTo: centerY).isActive = true
         }
+    }
+}
+
+// MARK: - UIActivityIndicatorView
+extension UIView {
+    static func indicator(style: UIActivityIndicatorView.Style = .medium) -> UIActivityIndicatorView {
+        let indicator = UIActivityIndicatorView(style: style)
+        indicator.startAnimating()
+        return indicator
     }
 }

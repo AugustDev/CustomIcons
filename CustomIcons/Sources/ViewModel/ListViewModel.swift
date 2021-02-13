@@ -10,24 +10,23 @@ import Combine
 
 final class ListViewModel: ListModelInjected {
     
-    @Published var items = [ListViewItem]() {
-        didSet {
-            isLoading = false
-        }
-    }
-    @Published var isLoading = false
+    @Published var items = [ListViewItem]()
     @Published var refreshItems = [IndexPath]()
     
+    private var originalItems = [ListViewItem]() {
+        didSet {
+            items = originalItems
+        }
+    }
     private let pendingOperations = PendingOperation()
     private var disposables: Set<AnyCancellable> = []
     
     func get() {
-        isLoading = true
         listModel.get()
             .replaceError(with: [])
             .eraseToAnyPublisher()
             .map(transform)
-            .assign(to: \.items, on: self)
+            .assign(to: \.originalItems, on: self)
             .store(in: &disposables)
     }
 }
@@ -101,6 +100,17 @@ private extension ListViewModel {
     func transform(_ items: [Icon]) -> [ListViewItem] {
         items.map { item in
             ListViewItem(item)
+        }
+    }
+}
+
+// MARK: - Search
+extension ListViewModel {
+    func search(_ query: String) {
+        if query != "" {
+            items = originalItems.filter { $0.title.contains(query) }
+        } else {
+            items = originalItems
         }
     }
 }

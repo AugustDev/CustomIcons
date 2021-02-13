@@ -8,14 +8,8 @@
 import UIKit
 import Combine
 
-final class ListController: UIViewController, ListViewModelInjected {
+final class ListController: UITableViewController, ListViewModelInjected {
 
-    private var isLoading = false {
-        didSet {
-            updateView()
-        }
-    }
-    
     private var items = [ListViewItem]() {
         didSet {
             tableView.reloadData()
@@ -30,17 +24,10 @@ final class ListController: UIViewController, ListViewModelInjected {
     
     private var disposables: Set<AnyCancellable> = []
     
-    lazy private var indicator: UIActivityIndicatorView = {
-        return .indicator(style: .large)
-    }()
-    
-    lazy private var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseIdentifier)
-        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
-        tableView.allowsSelection = false
-        tableView.dataSource = self
-        return tableView
+    lazy private var searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.obscuresBackgroundDuringPresentation = false
+       return searchController
     }()
     
     override func viewDidLoad() {
@@ -58,16 +45,34 @@ final class ListController: UIViewController, ListViewModelInjected {
 // MARK: - Binding
 extension ListController {
     func configureBinding() {
-        listViewModel.$isLoading
-            .receive(on: RunLoop.main)
-            .assign(to: \.isLoading, on: self)
+        
+        // SearchField
+        NotificationCenter.default.publisher(for: UISearchTextField.textDidChangeNotification,
+                                             object: searchController.searchBar.searchTextField)
+            .map {
+                let textField = $0.object as? UISearchTextField
+                return textField?.text ?? ""
+            }
+            .delay(for: .milliseconds(500), scheduler: RunLoop.main)
+            .sink(receiveValue: { [listViewModel] value in
+                listViewModel.search(value)
+            })
             .store(in: &disposables)
         
+        NotificationCenter.default.publisher(for: UISearchTextField.textDidEndEditingNotification,
+                                             object: searchController.searchBar.searchTextField)
+            .sink(receiveValue: { [listViewModel] value in
+                listViewModel.search("")
+            })
+            .store(in: &disposables)
+        
+        // Items
         listViewModel.$items
             .receive(on: RunLoop.main)
             .assign(to: \.items, on: self)
             .store(in: &disposables)
         
+        // Refresh Items
         listViewModel.$refreshItems
             .receive(on: RunLoop.main)
             .assign(to: \.refreshItems, on: self)
@@ -78,40 +83,30 @@ extension ListController {
 // MARK: - UI
 extension ListController {
     private func configureView() {
+        
+        // View
         title = "Custom Icons"
         view.backgroundColor = .white
+        
+        // NavigationController
         navigationController?.navigationBar.prefersLargeTitles = true
-        
-        view.addSubview(indicator)
-        view.addSubview(tableView)
-        
-        //
-        configureLayout()
-    }
-    
-    private func configureLayout() {
-        
-        indicator.anchor(centerX: view.centerXAnchor, centerY: view.centerYAnchor)
-        
-        tableView.anchor(top: view.topAnchor, paddingTop: 5,
-                         bottom: view.bottomAnchor, paddingBottom: 5,
-                         left: view.leftAnchor,
-                         right: view.rightAnchor)
-    }
-    
-    private func updateView() {
-        tableView.isHidden = isLoading
-        isLoading ? indicator.startAnimating():indicator.stopAnimating()
+        navigationItem.searchController = searchController
+
+        // TableView
+        tableView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseIdentifier)
+        tableView.backgroundView = .indicator(style: .large)
+        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        tableView.allowsSelection = false
     }
 }
 
 // MARK: - UITableViewDataSource
-extension ListController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension ListController {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseIdentifier, for: indexPath) as? ListCell else {
             return UITableViewCell()
@@ -134,20 +129,19 @@ extension ListController: UITableViewDataSource {
 }
 
 // MARK: - UIScrollViewDelegate
-extension ListController: UIScrollViewDelegate {
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+extension ListController {
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         listViewModel.suspendAllOperations()
     }
     
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             loadImagesForOnscreenCells()
             listViewModel.resumeAllOperations()
         }
     }
     
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         loadImagesForOnscreenCells()
         listViewModel.resumeAllOperations()
     }
@@ -159,14 +153,5 @@ extension ListController {
         if let paths = tableView.indexPathsForVisibleRows {
             listViewModel.loadImagesForOnscreenCells(paths)
         }
-    }
-}
-
-// MARK: - UIView
-extension UIView {
-    static func indicator(style: UIActivityIndicatorView.Style = .medium) -> UIActivityIndicatorView {
-        let indicator = UIActivityIndicatorView(style: style)
-        indicator.startAnimating()
-        return indicator
     }
 }

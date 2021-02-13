@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class ListViewModel: ListModelInjected {
+final class ListViewModel: ListModelInjected, ListViewLoaderInjected {
     
     @Published var items = [ListViewItem]()
     @Published var refreshItems = [IndexPath]()
@@ -18,8 +18,14 @@ final class ListViewModel: ListModelInjected {
             items = originalItems
         }
     }
-    private let pendingOperations = PendingOperation()
+    
     private var disposables: Set<AnyCancellable> = []
+    
+    init() {
+        listViewLoader.$refreshItems
+            .assign(to: \.refreshItems, on: self)
+            .store(in: &disposables)
+    }
     
     func get() {
         listModel.get()
@@ -28,70 +34,6 @@ final class ListViewModel: ListModelInjected {
             .map(transform)
             .assign(to: \.originalItems, on: self)
             .store(in: &disposables)
-    }
-}
-
-// MARK: - ImageLoader
-extension ListViewModel {
-    func suspendAllOperations() {
-        pendingOperations.downloadQueue.isSuspended = true
-    }
-    
-    func resumeAllOperations() {
-        pendingOperations.downloadQueue.isSuspended = false
-    }
-    
-    func loadImagesForOnscreenCells(_ paths: [IndexPath]) {
-        
-        let allPendingOperations = Set(pendingOperations.downloadsInProgress.keys)
-        
-        var toBeCancelled = allPendingOperations
-        let visiblePaths = Set(paths)
-        toBeCancelled.subtract(visiblePaths)
-        
-        var toBeStarted = visiblePaths
-        toBeStarted.subtract(allPendingOperations)
-        
-        for indexPath in toBeCancelled {
-            if let pendingDownload = pendingOperations.downloadsInProgress[indexPath] {
-                pendingDownload.cancel()
-            }
-            pendingOperations.downloadsInProgress.removeValue(forKey: indexPath)
-        }
-        
-        for indexPath in toBeStarted {
-            let itemToProcess = items[indexPath.row]
-            startOperations(for: itemToProcess, at: indexPath)
-        }
-    }
-    
-    func startOperations(for rocketViewItem: ImageItem, at indexPath: IndexPath) {
-        switch (rocketViewItem.state) {
-        case .new: startDownload(for: rocketViewItem, at: indexPath)
-        case .downloaded: print("downloaded")
-        default: print("do nothing")
-        }
-    }
-    
-    private func startDownload(for rocketViewItem: ImageItem, at indexPath: IndexPath) {
-        
-        guard pendingOperations.downloadsInProgress[indexPath] == nil else {
-            return
-        }
-        
-        let downloader = ImageDownloader(rocketViewItem)
-        
-        downloader.completionBlock = {
-            if downloader.isCancelled {
-                return
-            }
-            
-            self.pendingOperations.downloadsInProgress.removeValue(forKey: indexPath)
-            self.refreshItems = [indexPath]
-        }
-        
-        pendingOperations.downloadsInProgress[indexPath] = downloader
-        pendingOperations.downloadQueue.addOperation(downloader)
     }
 }
 

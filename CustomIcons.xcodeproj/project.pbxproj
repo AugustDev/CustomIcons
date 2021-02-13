@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6004AF3825D8335700CFB0A8 /* ListViewLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6004AF3725D8335700CFB0A8 /* ListViewLoader.swift */; };
 		609AB9E025D6F535007C500C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609AB9DF25D6F535007C500C /* AppDelegate.swift */; };
 		609AB9E425D6F535007C500C /* ListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609AB9E325D6F535007C500C /* ListController.swift */; };
 		609AB9E925D6F53C007C500C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 609AB9E825D6F53C007C500C /* Assets.xcassets */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6004AF3725D8335700CFB0A8 /* ListViewLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewLoader.swift; sourceTree = "<group>"; };
 		609AB9DC25D6F535007C500C /* CustomIcons.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CustomIcons.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		609AB9DF25D6F535007C500C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		609AB9E325D6F535007C500C /* ListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListController.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				609ABA5725D741FB007C500C /* ListViewItem.swift */,
+				6004AF3725D8335700CFB0A8 /* ListViewLoader.swift */,
 				609ABA3725D71CAE007C500C /* ListViewModel.swift */,
 			);
 			path = ViewModel;
@@ -318,6 +321,7 @@
 				609ABA4325D72CFF007C500C /* ConfigurableCell.swift in Sources */,
 				609ABA1E25D7053A007C500C /* Coordinator.swift in Sources */,
 				609AB9E425D6F535007C500C /* ListController.swift in Sources */,
+				6004AF3825D8335700CFB0A8 /* ListViewLoader.swift in Sources */,
 				609AB9E025D6F535007C500C /* AppDelegate.swift in Sources */,
 				609ABA3825D71CAE007C500C /* ListViewModel.swift in Sources */,
 			);

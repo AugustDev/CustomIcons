@@ -10,7 +10,11 @@ import Combine
 
 final class ListViewModel: ListModelInjected {
     
-    @Published var items = [ListViewItem]()
+    @Published var items = [ListViewItem]() {
+        didSet {
+            isLoading = false
+        }
+    }
     @Published var isLoading = false
     @Published var refreshItems = [IndexPath]()
     
@@ -18,6 +22,7 @@ final class ListViewModel: ListModelInjected {
     private var disposables: Set<AnyCancellable> = []
     
     func get() {
+        isLoading = true
         listModel.get()
             .replaceError(with: [])
             .eraseToAnyPublisher()

@@ -8,9 +8,13 @@
 import UIKit
 import Combine
 
-final class ListController: UITableViewController, ListViewModelInjected {
+final class ListController: UIViewController, ListViewModelInjected {
 
-    private var isLoading = false
+    private var isLoading = false {
+        didSet {
+            updateView()
+        }
+    }
     
     private var items = [ListViewItem]() {
         didSet {
@@ -26,9 +30,22 @@ final class ListController: UITableViewController, ListViewModelInjected {
     
     private var disposables: Set<AnyCancellable> = []
     
+    lazy private var indicator: UIActivityIndicatorView = {
+        return .indicator(style: .large)
+    }()
+    
+    lazy private var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseIdentifier)
+        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        tableView.allowsSelection = false
+        tableView.dataSource = self
+        return tableView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
+        configureView()
         configureBinding()
     }
     
@@ -60,26 +77,41 @@ extension ListController {
 
 // MARK: - UI
 extension ListController {
-    private func setup() {
+    private func configureView() {
         title = "Custom Icons"
         view.backgroundColor = .white
         navigationController?.navigationBar.prefersLargeTitles = true
         
-        tableView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseIdentifier)
-        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
-        tableView.allowsSelection = false
+        view.addSubview(indicator)
+        view.addSubview(tableView)
+        
+        //
+        configureLayout()
     }
     
-    private func update() {}
+    private func configureLayout() {
+        
+        indicator.anchor(centerX: view.centerXAnchor, centerY: view.centerYAnchor)
+        
+        tableView.anchor(top: view.topAnchor, paddingTop: 5,
+                         bottom: view.bottomAnchor, paddingBottom: 5,
+                         left: view.leftAnchor,
+                         right: view.rightAnchor)
+    }
+    
+    private func updateView() {
+        tableView.isHidden = isLoading
+        isLoading ? indicator.startAnimating():indicator.stopAnimating()
+    }
 }
 
 // MARK: - UITableViewDataSource
-extension ListController {
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension ListController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseIdentifier, for: indexPath) as? ListCell else {
             return UITableViewCell()
@@ -102,20 +134,20 @@ extension ListController {
 }
 
 // MARK: - UIScrollViewDelegate
-extension ListController {
+extension ListController: UIScrollViewDelegate {
     
-    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         listViewModel.suspendAllOperations()
     }
     
-    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             loadImagesForOnscreenCells()
             listViewModel.resumeAllOperations()
         }
     }
     
-    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         loadImagesForOnscreenCells()
         listViewModel.resumeAllOperations()
     }
@@ -127,5 +159,14 @@ extension ListController {
         if let paths = tableView.indexPathsForVisibleRows {
             listViewModel.loadImagesForOnscreenCells(paths)
         }
+    }
+}
+
+// MARK: - UIView
+extension UIView {
+    static func indicator(style: UIActivityIndicatorView.Style = .medium) -> UIActivityIndicatorView {
+        let indicator = UIActivityIndicatorView(style: style)
+        indicator.startAnimating()
+        return indicator
     }
 }

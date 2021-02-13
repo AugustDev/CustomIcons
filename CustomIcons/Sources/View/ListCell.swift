@@ -100,11 +100,7 @@ extension ListCell {
 extension ListCell: ReusableCell {}
 
 // MARK: - UIView
-private extension UIView {
-    static func indicator() -> UIActivityIndicatorView {
-        UIActivityIndicatorView(style: .medium)
-    }
-    
+private extension UIView {    
     static func background() -> UIView {
         let view = UIView(frame: CGRect.zero)
         view.backgroundColor = .white

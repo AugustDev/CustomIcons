@@ -11,9 +11,15 @@ final class ListCell: UITableViewCell {
     
     let indicator = ListCell.indicator()
     
+    private let background = ListCell.background()
+    private let container = ListCell.container()
+    private let iconImageView = ListCell.iconImageView()
+    private let titleLabel = ListCell.titleLabel()
+    private let subtitleLabel = ListCell.subtitleLabel()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-        configure()
+        setupView()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -21,31 +27,72 @@ final class ListCell: UITableViewCell {
     }
 }
 
-// MARK: - UI
-extension ListCell {
-    private func configure() {
-        textLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
-        detailTextLabel?.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        detailTextLabel?.textColor = .lightGray
+// MARK: - ConfigurableCell
+extension ListCell: ConfigurableCell {
+    func configure(_ item: ListViewItem) {
         
-        layer.borderColor = UIColor.red.cgColor
-        layer.borderWidth = 1
+        // Reset View
+        resetView()
         
-//        insertSubview(.background(), at: 0)
+        // Info
+        iconImageView.image = item.uiImage
+        titleLabel.text = item.title
+        subtitleLabel.text = item.subtitle
         
-        if accessoryView == nil {
-            accessoryView = indicator
+        // Indicator State
+        switch (item.state) {
+        case .failed: indicator.stopAnimating()
+        case .new: indicator.startAnimating()
+        case .downloaded: indicator.stopAnimating()
         }
     }
 }
 
-
-// MARK: - ConfigurableCell
-extension ListCell: ConfigurableCell {
-    func configure(_ item: ListViewItem) {
-        textLabel?.text = item.title
-        detailTextLabel?.text = item.subtitle
-        imageView?.image = item.uiImage
+// MARK: - UI
+extension ListCell {
+    private func setupView() {
+        
+        //
+        selectionStyle = .none
+        layoutMargins = UIEdgeInsets.zero
+        preservesSuperviewLayoutMargins = false
+        
+        if accessoryView == nil {
+            accessoryView = indicator
+        }
+        
+        // Add views
+        addSubview(background)
+        background.addSubview(container)
+        container.addArrangedSubview(iconImageView)
+        
+        let labelsContainer = ListCell.labelsContainer()
+        labelsContainer.addArrangedSubview(titleLabel)
+        labelsContainer.addArrangedSubview(subtitleLabel)
+        container.addArrangedSubview(labelsContainer)
+        
+        //
+        setupLayout()
+    }
+    
+    private func setupLayout() {
+        background.anchor(top: topAnchor, paddingTop: 5,
+                          bottom: bottomAnchor, paddingBottom: 5,
+                          left: leftAnchor, paddingLeft: 20,
+                          right: rightAnchor, paddingRight: 20)
+        
+        container.anchor(top: background.topAnchor, paddingTop: 15,
+                         bottom: background.bottomAnchor, paddingBottom: 15,
+                         left: background.leftAnchor, paddingLeft: 10,
+                         right: background.rightAnchor, paddingRight: 5)
+        
+        iconImageView.anchor(width: 45, height: 45)
+    }
+    
+    private func resetView() {
+        iconImageView.image = UIImage()
+        titleLabel.text = ""
+        subtitleLabel.text = ""
     }
 }
 
@@ -59,13 +106,45 @@ private extension UIView {
     }
     
     static func background() -> UIView {
-        let view = UIView(frame: CGRect(x: 20, y: 10, width: 100, height: 90))
+        let view = UIView(frame: CGRect.zero)
         view.backgroundColor = .white
         view.layer.cornerRadius = 10
         view.layer.shadowColor = UIColor.gray.cgColor
-        view.layer.shadowOpacity = 0.3
-        view.layer.shadowOffset = .zero
-        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.20
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 4
         return view
+    }
+    
+    static func container() -> UIStackView {
+        let stack = UIStackView(frame: CGRect.zero)
+        stack.spacing = 10
+        return stack
+    }
+    
+    static func iconImageView() -> UIImageView {
+        let imageView = UIImageView()
+        imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
+        return imageView
+    }
+    
+    static func labelsContainer() -> UIStackView {
+        let stack = UIStackView(frame: CGRect.zero)
+        stack.axis = .vertical
+        return stack
+    }
+    
+    static func titleLabel() -> UILabel {
+        let label = UILabel()
+        label.font = UIFont.preferredFont(forTextStyle: .headline)
+        return label
+    }
+    
+    static func subtitleLabel() -> UILabel {
+        let label = UILabel()
+        label.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        label.textColor = .lightGray
+        return label
     }
 }

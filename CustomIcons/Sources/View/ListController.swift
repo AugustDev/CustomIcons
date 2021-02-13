@@ -41,7 +41,6 @@ final class ListController: UITableViewController, ListViewModelInjected {
 // MARK: - Binding
 extension ListController {
     func configureBinding() {
-        
         listViewModel.$isLoading
             .receive(on: RunLoop.main)
             .assign(to: \.isLoading, on: self)
@@ -66,9 +65,9 @@ extension ListController {
         view.backgroundColor = .white
         navigationController?.navigationBar.prefersLargeTitles = true
         
+        tableView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseIdentifier)
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         tableView.allowsSelection = false
-        tableView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseIdentifier)
     }
     
     private func update() {}
@@ -81,33 +80,28 @@ extension ListController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseIdentifier, for: indexPath) as? ListCell else {
             return UITableViewCell()
         }
 
         let item = items[indexPath.row]
         
+        // Populate Cell
         cell.configure(item)
-
-        switch (item.state) {
-        case .failed: cell.indicator.stopAnimating()
-        case .new:
-            cell.indicator.startAnimating()
+        
+        // Load Images
+        if case ImageState.new = item.state {
             if !tableView.isDragging && !tableView.isDecelerating {
                 listViewModel.startOperations(for: item, at: indexPath)
             }
-        case .downloaded: cell.indicator.stopAnimating()
         }
         
         return cell
     }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
-    }
 }
 
-// MARK: - ScrollView Delegate Methods
+// MARK: - UIScrollViewDelegate
 extension ListController {
     
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {

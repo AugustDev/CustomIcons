@@ -7,10 +7,6 @@
 
 import Foundation
 
-protocol EndPointType {
-    var url: URL? { get }
-}
-
 enum EndPoint: EndPointType {
     
     case remote

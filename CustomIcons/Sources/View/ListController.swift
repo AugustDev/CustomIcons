@@ -11,9 +11,16 @@ import Combine
 final class ListController: UITableViewController, ListViewModelInjected {
 
     private var isLoading = false
-    private var items = [Icon]() {
+    
+    private var items = [ListViewItem]() {
         didSet {
             tableView.reloadData()
+        }
+    }
+    
+    private var refreshItems = [IndexPath]() {
+        didSet {
+            tableView.reloadRows(at: refreshItems, with: .fade)
         }
     }
     
@@ -34,9 +41,20 @@ final class ListController: UITableViewController, ListViewModelInjected {
 // MARK: - Binding
 extension ListController {
     func configureBinding() {
+        
+        listViewModel.$isLoading
+            .receive(on: RunLoop.main)
+            .assign(to: \.isLoading, on: self)
+            .store(in: &disposables)
+        
         listViewModel.$items
             .receive(on: RunLoop.main)
             .assign(to: \.items, on: self)
+            .store(in: &disposables)
+        
+        listViewModel.$refreshItems
+            .receive(on: RunLoop.main)
+            .assign(to: \.refreshItems, on: self)
             .store(in: &disposables)
     }
 }
@@ -67,12 +85,53 @@ extension ListController {
             return UITableViewCell()
         }
 
-        cell.configure(items[indexPath.row])
+        let item = items[indexPath.row]
+        
+        cell.configure(item)
+
+        switch (item.state) {
+        case .failed: cell.indicator.stopAnimating()
+        case .new:
+            cell.indicator.startAnimating()
+            if !tableView.isDragging && !tableView.isDecelerating {
+                listViewModel.startOperations(for: item, at: indexPath)
+            }
+        case .downloaded: cell.indicator.stopAnimating()
+        }
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
+    }
+}
+
+// MARK: - ScrollView Delegate Methods
+extension ListController {
+    
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        listViewModel.suspendAllOperations()
+    }
+    
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            loadImagesForOnscreenCells()
+            listViewModel.resumeAllOperations()
+        }
+    }
+    
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        loadImagesForOnscreenCells()
+        listViewModel.resumeAllOperations()
+    }
+}
+
+// MARK: - Image Download Methods
+extension ListController {
+    func loadImagesForOnscreenCells() {
+        if let paths = tableView.indexPathsForVisibleRows {
+            listViewModel.loadImagesForOnscreenCells(paths)
+        }
     }
 }

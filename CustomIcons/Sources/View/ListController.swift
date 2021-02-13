@@ -12,7 +12,10 @@ final class ListController: UITableViewController, ListViewModelInjected {
 
     private var items = [ListViewItem]() {
         didSet {
-            tableView.reloadData()
+            if items.count > 0 {
+                indicator.stopAnimating()
+                tableView.reloadData()
+            }
         }
     }
     
@@ -24,7 +27,11 @@ final class ListController: UITableViewController, ListViewModelInjected {
     
     private var disposables: Set<AnyCancellable> = []
     
-    lazy private var searchController: UISearchController = {
+    private lazy var indicator: UIActivityIndicatorView = {
+        .indicator(style: .large)
+    }()
+    
+    private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.obscuresBackgroundDuringPresentation = false
        return searchController
@@ -92,7 +99,7 @@ extension ListController {
 
         // TableView
         tableView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseIdentifier)
-        tableView.backgroundView = .indicator(style: .large)
+        tableView.backgroundView = indicator
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         tableView.allowsSelection = false
     }

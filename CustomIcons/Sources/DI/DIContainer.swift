@@ -15,6 +15,7 @@ struct InjectionMap {
     static var listViewModel = ListViewModel()
     static var listModel: ListModelType = ListModel()
     static var service: ServiceType = Service()
+    static var listViewLoader = ListViewLoader()
 }
 
 // MARK: AppCoordinator
@@ -57,6 +58,13 @@ protocol ServiceInjected {}
 
 extension ServiceInjected {
     var service: ServiceType { get { return InjectionMap.service } }
+}
+
+// MARK: ListViewLoader
+protocol ListViewLoaderInjected {}
+
+extension ListViewLoaderInjected {
+    var listViewLoader: ListViewLoader { get { return InjectionMap.listViewLoader } }
 }
 
 

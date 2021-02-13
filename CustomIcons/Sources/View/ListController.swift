@@ -46,19 +46,17 @@ final class ListController: UITableViewController, ListViewModelInjected {
 extension ListController {
     func configureBinding() {
         
-        // SearchField
+        // SearchField Text Changed
         NotificationCenter.default.publisher(for: UISearchTextField.textDidChangeNotification,
                                              object: searchController.searchBar.searchTextField)
-            .map {
-                let textField = $0.object as? UISearchTextField
-                return textField?.text ?? ""
-            }
+            .map { ($0.object as? UISearchTextField)?.text ?? "" }
             .delay(for: .milliseconds(500), scheduler: RunLoop.main)
             .sink(receiveValue: { [listViewModel] value in
                 listViewModel.search(value)
             })
             .store(in: &disposables)
         
+        // SearchField Cancel
         NotificationCenter.default.publisher(for: UISearchTextField.textDidEndEditingNotification,
                                              object: searchController.searchBar.searchTextField)
             .sink(receiveValue: { [listViewModel] value in
@@ -120,7 +118,7 @@ extension ListController {
         // Load Images
         if case ImageState.new = item.state {
             if !tableView.isDragging && !tableView.isDecelerating {
-                listViewModel.startOperations(for: item, at: indexPath)
+                listViewModel.listViewLoader.startOperations(for: item, at: indexPath)
             }
         }
         
@@ -131,19 +129,19 @@ extension ListController {
 // MARK: - UIScrollViewDelegate
 extension ListController {
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        listViewModel.suspendAllOperations()
+        listViewModel.listViewLoader.suspendAllOperations()
     }
     
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             loadImagesForOnscreenCells()
-            listViewModel.resumeAllOperations()
+            listViewModel.listViewLoader.resumeAllOperations()
         }
     }
     
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         loadImagesForOnscreenCells()
-        listViewModel.resumeAllOperations()
+        listViewModel.listViewLoader.resumeAllOperations()
     }
 }
 
@@ -151,7 +149,7 @@ extension ListController {
 extension ListController {
     func loadImagesForOnscreenCells() {
         if let paths = tableView.indexPathsForVisibleRows {
-            listViewModel.loadImagesForOnscreenCells(paths)
+            listViewModel.listViewLoader.loadImagesForOnscreenCells(paths, items: items)
         }
     }
 }
